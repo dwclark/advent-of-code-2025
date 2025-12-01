@@ -26,25 +26,23 @@
 	  (incf passes)))
     (values pos passes)))
 
-(defun count-zeroes (entries)
-  (loop with zeroes = 0
-	with at = 50
+(defun counts (entries)
+  (loop with at = 50
+	with total-at-zero = 0
+	with total-passes = 0
 	for entry in entries
-	do (setf at (new-at at entry))
-	   (if (zerop at) (incf zeroes))
-	finally (return zeroes)))
-
-(defun count-pass-zero (entries)
-  (loop with by-zero = 0
-	with at = 50
-	for entry in entries
-	do (multiple-value-bind (pos passes) (new-at at entry)
-	     (setf at pos)
-	     (incf by-zero passes))
-	finally (return by-zero)))
+	do (multiple-value-bind (new-at new-passes) (new-at at entry)
+	     (setf at new-at
+		   total-at-zero (+ total-at-zero (if (zerop at) 1 0))
+		   total-passes (+ total-passes new-passes)))
+	finally (return (values total-at-zero total-passes))))
 	
 (defun part-1 ()
-  (count-zeroes (parse-file "01")))
+  (multiple-value-bind (one two) (counts (parse-file "01"))
+    (declare (ignore two))
+    one))
 
 (defun part-2 ()
-  (count-pass-zero (parse-file "01")))
+  (multiple-value-bind (one two) (counts (parse-file "01"))
+    (declare (ignore one))
+    two))
