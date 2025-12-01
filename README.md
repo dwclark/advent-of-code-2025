@@ -1,0 +1,7 @@
+# Advent of Code 2025
+
+Notes from advent of code 2025
+
+## Day 01
+
+Not a great start to 2025. I did part 1 using modular arithmetic. On part 2 I confused myself with doing the counts because of the special cases: landing on zero or not, going negative or positive. I ended up just coding a state function which keeps track of both where the pointer is and how many times it had pointed at zero. It works because the input data doesn't have any crazy numbers. That state function solves both parts.
