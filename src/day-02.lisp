@@ -1,22 +1,17 @@
 (defpackage :day-02
   (:use #:cl #:fsio-csv #:fsio-utils)
-  (:import-from :utils :day-file-path)
-  (:import-from :alexandria :hash-table-keys)
+  (:import-from :utils #:read-day-file)
+  (:import-from :alexandria #:hash-table-keys)
+  (:import-from :cl-ppcre #:split)
   (:export #:part-1 #:part-2))
 
 (in-package :day-02)
 
-(mixin stm-csv->table stm-parser stm-functions table table-accum)
-
 (defun read-contents (day)
-  (with-open-file (stm (day-file-path day))
-    (let* ((tab (table-new :has-headers nil :keep-rows t))
-	   (parser (stm-parser-new stm))
-	   (tab (stm-csv->table parser tab)))
-      (loop for item across (table-get-row tab 0)
-	    collecting ((lambda ()
-			  (let ((pos (position #\- item)))
-			    (list (subseq item 0 pos) (subseq item (1+ pos))))))))))
+  (flet ((process (item)
+	   (let ((pos (position #\- item)))
+	     (list (subseq item 0 pos) (subseq item (1+ pos))))))
+    (mapcar #'process (split "," (first (read-day-file day))))))
 
 (defun lower-sub-bound (sequence-length)
   (parse-integer (format nil "~A~v@{~A~:*~}" "1" (1- sequence-length) "0")))
