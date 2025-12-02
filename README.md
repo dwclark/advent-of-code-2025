@@ -12,3 +12,4 @@ I did spend quite a bit of time later trying to look for a more arithmetic solut
 
 ## [Day 02](src/day-02.lisp)
 
+The main key to solving both parts is to generate the numbers with the correct patterns that are be within the bounds, rather than searching for numbers that match the pattern. Once the numbers are generated collect them and add up the values.
