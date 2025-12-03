@@ -6,15 +6,6 @@
 
 (in-package :day-03)
 
-(defun find-largest-two (vec)
-  (loop with largest = 0
-	for i from 0 below (length vec)
-	do (loop for j from (1+ i) below (length vec)
-		 do (let ((num (+ (* 10 (aref vec i)) (aref vec j))))
-		      (if (< largest num)
-			  (setf largest num))))
-	finally (return largest)))
-
 (defun find-largest-for-length (vec start num-length)
   (loop with largest = 0
 	with largest-index = 0
@@ -33,12 +24,14 @@
 	     (setf start-index (1+ index)))
 	finally (return accum)))
 
-(defun split-nums (str)
-  (map 'vector #'(lambda (c) (digit-char-p c)) str))
+(defun max-of-length (len)
+  (labels ((split-nums (str)
+	     (map 'vector #'(lambda (c) (digit-char-p c)) str)))
+    (reduce #'+ (mapcar (rcurry #'find-largest-number len) (mapcar #'split-nums (read-day-file "03"))))))
 
 (defun part-1 ()
-  (reduce #'+ (mapcar (rcurry #'find-largest-number 2) (mapcar #'split-nums (read-day-file "03")))))
+  (max-of-length 2))
 
 (defun part-2 ()
-  (reduce #'+ (mapcar (rcurry #'find-largest-number 12) (mapcar #'split-nums (read-day-file "03")))))
+  (max-of-length 12))
   
