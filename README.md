@@ -13,3 +13,15 @@ I did spend quite a bit of time later trying to look for a more arithmetic solut
 ## [Day 02](src/day-02.lisp)
 
 The main key to solving both parts is to generate the numbers with the correct patterns that are be within the bounds, rather than searching for numbers that match the pattern. Once the numbers are generated collect them and add up the values.
+
+## [Day 03](src/day-03.lisp)
+
+The basic algorithm to find the largest number of n digits is as follows:
+
+1. Starting at index = 0, find the first number, with its index, that is largest **and** leaves at least n-1 digits to the right
+2. Accumulate number * 10 ^ (n-1) into an accumulator
+3. Set the index to the found index + 1
+4. Set n = n - 1, go back to 1. Repeat while n > 0
+
+Basically, you are trying to assemble the biggest number possible as you proceed right. You always want to find the biggest number that leaves enough digits to form the rest of the number. It doesn't matter which digits remain, if the current number is biggest, the resulting number will always be the biggest possible.
+
