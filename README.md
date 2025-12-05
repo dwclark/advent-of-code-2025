@@ -25,3 +25,14 @@ The basic algorithm to find the largest number of n digits is as follows:
 
 Basically, you are trying to assemble the biggest number possible as you proceed right. You always want to find the biggest number that leaves enough digits to form the rest of the number. It doesn't matter which digits remain, if the current number is biggest, the resulting number will always be the biggest possible.
 
+## [Day 05](src/day-05.lisp)
+
+Part 1 should be easy to follow.
+
+In part two the algorithm to find the number of fresh ids is:
+
+1. Sort the ranges by the lower value in the ranges.
+2. For each range, go through all previous ranges and adjust the lower range value (of the current range) to remove any ids that were previously accounted for until:
+   * Either you arrive at the current range
+   * The range becomes invalid, i.e. the lower range value is > the upper range value
+3. Once a range becomes invalid, don't use it to adjust the ranges of any other range, i.e. ignore it when adjusting ranges.
