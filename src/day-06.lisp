@@ -27,25 +27,18 @@
     (values ops numbers)))
 
 (defun ops-columns (str)
-  (flet ((find-op (c)
-	   (case c
-	     (#\+ #'+)
-	     (#\* #'*)
-	     (otherwise nil))))
-    (loop with ret = nil
-	  for column from 0 below (length str)
-	  do (let ((op (find-op (aref str column))))
-	       (if op
-		   (push (cons op column) ret)))
-	  finally (return (reverse ret)))))
+  (loop for column from 0 below (length str)
+	for c across str
+	when (not (char= #\Space c))
+	  collect (cons (if (char= #\+ c) #'+ #'*) column) into ret
+	end
+	finally (return ret)))
 
 (defun aligned-numbers (ops-cols str)
   (loop for next on ops-cols
-	collecting (let ((f (first next))
-			 (r (rest next)))
-		     (if r
-			 (subseq str (cdr f) (1- (cdr (first r))))
-			 (subseq str (cdr f)))) into numbers
+	collect (let ((start (cdr (first next)))
+		      (end (if (rest next) (1- (cdr (first (rest next)))) (length str))))
+		  (subseq str start end)) into numbers
 	finally (return numbers)))
 
 (defun part-2-math (ops-cols aligned)
