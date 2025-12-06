@@ -36,10 +36,9 @@
 
 (defun aligned-numbers (ops-cols str)
   (loop for next on ops-cols
-	collect (let ((start (cdr (first next)))
-		      (end (if (rest next) (1- (cdr (first (rest next)))) (length str))))
-		  (subseq str start end)) into numbers
-	finally (return numbers)))
+	collect (subseq str
+			(cdr (first next))
+			(if (rest next) (1- (cdr (first (rest next)))) (length str)))))
 
 (defun part-2-math (ops-cols aligned)
   (flet ((solve (op-col &rest strs)
