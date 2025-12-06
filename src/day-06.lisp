@@ -42,14 +42,11 @@
 
 (defun part-2-math (ops-cols aligned)
   (flet ((solve (op-col &rest strs)
-	   (let ((op (car op-col))
-		 (width (length (first strs))))
-	     (loop for index from (1- width) downto 0
-		   collecting (loop for str in strs
-				    collecting (aref str index) into number
-				    finally (return (parse-integer (concatenate 'string number) :junk-allowed t))) into numbers
-		   finally (return (apply op numbers))))))
-	     
+	   (apply (car op-col)
+		  (loop with width = (length (first strs))
+			for index from (1- width) downto 0
+			collecting (parse-integer (concatenate 'string (loop for str in strs
+									     collecting (aref str index))) :junk-allowed t)))))
     (reduce #'+ (apply #'mapcar #'solve (append (list ops-cols) aligned)))))
 
 (defun part-2 ()
