@@ -48,17 +48,6 @@
 			 (subseq str (cdr f)))) into numbers
 	finally (return numbers)))
 
-(defun part-2-apply (op-cell problem)
-  (let ((op (car op-cell))
-	(width (cdr op-cell)))
-    (loop with numbers = (make-array 0 :adjustable t :fill-pointer t)
-	  for i from (1- width) downto 0
-	  do (loop with number = (make-array 0 :element-type 'character :adjustable t :fill-pointer t)
-		   for row across problem
-		   do (vector-push-extend (aref row i) number)
-		   finally (vector-push-extend (parse-integer number :junk-allowed t) numbers))
-	  finally (return (apply op (concatenate 'list numbers))))))
-    
 (defun part-2-math (ops-cols aligned)
   (flet ((solve (op-col &rest strs)
 	   (let ((op (car op-col))

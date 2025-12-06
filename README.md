@@ -36,3 +36,15 @@ In part two the algorithm to find the number of fresh ids is:
    * Either you arrive at the current range
    * The range becomes invalid, i.e. the lower range value is > the upper range value
 3. Once a range becomes invalid, don't use it to adjust the ranges of any other range, i.e. ignore it when adjusting ranges.
+
+## [Day 06](src/day-06.lisp)
+
+Part 1 was easy. Read in the whole file as lists of symbols. Then go column by column applying the operation in the last column.
+
+Part 2 means I had to throw away just reading in the file as symbols, I had to treat them as strings. This lead to lots of off by one and alignment issues. The two keys to keeping thing aligned are:
+
+1. Problems begin in the column where the operator is. This means you have to extract the operators and the columns from the last line before processing any other lines.
+2. Extracting the numbers for a problem is now a matter of getting a subsequence of characters starting where the operator starts. The subsequence ends either 1 character before the next operator OR at the end of the line.
+
+Finally, for a given problem read the columns backwards and extract one character per line to form a new string. Each string can then be converted into a number (ignoring any spaces). Gather those numbers and apply the operator to solve a single problem. Now just add up the solutions to all of the problems.
+
