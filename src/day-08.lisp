@@ -101,7 +101,6 @@
 	 (last nil))
     (loop for metric in metrics
 	  do (multiple-value-bind (how circuit) (how-p metric circuits)
-	       (format t "~A ~%" (incf index))
 	       (case how
 		 (:noaction nil)
 		 (:new (push (make-circuit metric) circuits))

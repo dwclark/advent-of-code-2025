@@ -48,3 +48,8 @@ Part 2 means I had to throw away just reading in the file as symbols, I had to t
 
 Finally, for a given problem read the columns backwards and extract one character per line to form a new string. Each string can then be converted into a number (ignoring any spaces). Gather those numbers and apply the operator to solve a single problem. Now add up the solutions to all of the problems.
 
+## [Day 08](src/day-08.lisp)
+
+Part 1 was relatively easy.
+
+However, the day as a whole was mainly about following instructions exactly and reading comprehension. It took me forever just to make sense of part 2. At first I followed mechanically what part 2 asked for. However, that was *very* slow. I had to do a couple of small optimizations to make it run quick enough to solve the problem in a reasonable amount of time.
