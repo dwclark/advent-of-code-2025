@@ -15,8 +15,8 @@
                (:file "src/day-06")
                (:file "src/day-07")
                (:file "src/day-08")
-               #|(:file "src/day-09")
-               (:file "src/day-10")
+               (:file "src/day-09")
+               #|(:file "src/day-10")
                (:file "src/day-11")
                (:file "src/day-12")|#
 	       
