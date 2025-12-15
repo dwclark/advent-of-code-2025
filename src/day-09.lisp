@@ -68,6 +68,11 @@
 (defun solve-2 ()
   (let ((y-lists (make-hash-table))
 	(x-lists (make-hash-table)))
+
+    ;; First insight/trick: Index all of the points in the polygon for later
+    ;; fast lookup. Be sure to sort all of the value lists for later use.
+    ;; What we end up with is entries of this form x-val -> sorted list of all y values at that x-val
+    ;; and y-val -> sorted list of all x values at that y-val
     (loop for p in (append *reds* *greens*)
 	  do (vector-push-extend (y p) (ensure-gethash (x p) y-lists (make-array 0 :adjustable t :fill-pointer 0)))
 	     (vector-push-extend (x p) (ensure-gethash (y p) x-lists (make-array 0 :adjustable t :fill-pointer 0)))
@@ -79,6 +84,12 @@
 		    (sort-values x-lists)))
 
     (flet ((contains-rectangle (p0 p1)
+	     ;; This is the real trick.
+	     ;; Now that we have the sorted list, find the corners of a rectangle
+	     ;; that is 1 unit less wide and 1 unit less tall. What we are
+	     ;; trying to find is if any points on the polygon bisect the sides
+	     ;; of this new rectangle. If the insertion points of the min and max
+	     ;; are the same, then there is no intervening point on the polygon.
 	     (let ((x-min (1+ (min (x p0) (x p1))))
 		   (x-max (1- (max (x p0) (x p1))))
 		   (y-min (1+ (min (y p0) (y p1))))

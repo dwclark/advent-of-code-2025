@@ -53,3 +53,18 @@ Finally, for a given problem read the columns backwards and extract one characte
 Part 1 was relatively easy.
 
 However, the day as a whole was mainly about following instructions exactly and reading comprehension. It took me forever just to make sense of part 2. At first I followed mechanically what part 2 asked for. However, that was *very* slow. I had to do a couple of small optimizations to make it run quick enough to solve the problem in a reasonable amount of time.
+
+## [Day 09](src/day-09.lisp)
+
+Part 1 was easy. Too easy.
+
+I say too easy because it ended up making it hard for *me* to solve part 2. The problem was I kept wanting to re-use the code in part 1 to solve part 2. What this meant was that I kept using part 1 to get the edges of the polygon...but this is not correct. The only way to get the edges of the polygon is to do exactly as the problem says, go line by line constructing the edges. I kept just using the 1 unit width lines of part 1 *as* the edges. This is of course wrong because it will make edges that bisect the polygon along with the actual edges of the polygon. This means that any inscribed rectangle will end up being smaller than it should because more lines will mean more limitations on the inscribed rectangle.
+
+By the time I figured this out I had spent way too much time on it and had gotten myself way to confused. I resorted to understanding someone else's solution and translating it into common lisp. The fine person whose [work I copied did an excellent job explaining the python code](https://github.com/alexprengere/advent_of_code/blob/master/2025/09/python/main.py). See comments in my code for the key insight into solving the problem.
+
+Things I learned from this problem:
+
+* Code reuse is over rated. Solve the problem at hand and don't be mesmerized by your previous code. It may have nothing to do with the problem at hand.
+* It helps to have a picture for these geometric problems. I learned enough gnuplot to draw the polygon represented by the points in the data file. This helped with visualization and understanding what the goal was.
+* Common Lisp really doesn't have any good geometry libraries. I did use [this library](https://github.com/Ramarren/cl-geometry) to try and solve the problem. While I did learn some new concepts and ideas from the library (unfortunately, none of them helped me solve the problem) I did come across a nasty bug that made me unable to continue using it to try and solve the problem.
+* I need to learn more about computational geometry. To be clear, I doubt there is an algorithm that solves this problem directly. However, learning more about geometrical computations would probably have made me more comfortable programming with geometrical ideas and given me more confidence in exploring the problem space. AOC should be about learning new things, not solving specific problems.
