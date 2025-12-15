@@ -60,7 +60,7 @@ Part 1 was easy. Too easy.
 
 I say too easy because it ended up making it hard for *me* to solve part 2. The problem was I kept wanting to re-use the code in part 1 to solve part 2. What this meant was that I kept using part 1 to get the edges of the polygon...but this is not correct. The only way to get the edges of the polygon is to do exactly as the problem says, go line by line constructing the edges. I kept just using the 1 unit width lines of part 1 *as* the edges. This is of course wrong because it will make edges that bisect the polygon along with the actual edges of the polygon. This means that any inscribed rectangle will end up being smaller than it should because more lines will mean more limitations on the inscribed rectangle.
 
-By the time I figured this out I had spent way too much time on it and had gotten myself way to confused. I resorted to understanding someone else's solution and translating it into common lisp. The fine person whose [work I copied did an excellent job explaining the python code](https://github.com/alexprengere/advent_of_code/blob/master/2025/09/python/main.py). See comments in my code for the key insight into solving the problem.
+By the time I figured this out I had spent way too much time on it and had gotten myself way too confused. I resorted to understanding someone else's solution and translating it into common lisp. The fine person whose [work I copied did an excellent job explaining the python code](https://github.com/alexprengere/advent_of_code/blob/master/2025/09/python/main.py). See comments in my code for the key insight into solving the problem.
 
 Things I learned from this problem:
 
