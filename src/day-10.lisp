@@ -9,7 +9,7 @@
 
 (in-package :day-10)
 
-(defstruct line goal buttons)
+(defstruct line goal buttons joltage)
   
 (defun read-config-line (str)
   (let ((lights (loop for i from 1 below (position #\] str)
@@ -21,14 +21,15 @@
 					 (sub-str (subseq str start-pos end-pos))
 					 (for-parse (substitute #\Space #\, sub-str)))
 				    (setf start-pos (position #\( str :start end-pos))
-				    (read-from-string for-parse)))))
-    (make-line :goal lights :buttons buttons)))
+				    (read-from-string for-parse))))
+	(joltage (read-from-string (concatenate 'string "(" (subseq (substitute #\Space #\, str) (1+ (position #\{ str)) (position #\} str)) ")"))))
+    (make-line :goal lights :buttons buttons :joltage (make-array (length joltage) :initial-contents joltage))))
 
 (defun read-config (day)
   (loop for config-line in (read-day-file day)
 	collecting (read-config-line config-line)))
 
-(defun solve-it (it)
+(defun solve-1 (it)
   (let* ((already (make-hash-table :test 'equalp))
 	 (start (cons 0 (make-array (length (line-goal it)) :initial-element :off)))
 	 (q (make-instance 'basic-queue)))
@@ -50,5 +51,12 @@
 						     finally (return proposed)))))))))))
 
 (defun part-1 ()
-  (reduce #'+ (mapcar #'solve-it (read-config "10"))))
+  (reduce #'+ (mapcar #'solve-1 (read-config "10"))))
+
+;; no longer loops, previous states can repeat
+;; however, stopping condition is now can't go over limit on any one number
+;; dijkstra's will probably work but may be too slow
+
+(defun part-2 ()
+  )
 	       
