@@ -86,3 +86,12 @@ Part 2 was a doozy. Some notes on the solution:
 * Lots of people solved this using SAT solvers. I played around with the Z3 python SAT solver. I was able to get it to solve one of the sample problems manually. However, I had to tell it that one of the variables should definitely be zero to get the minimal correct solution. When I only put the restruction that every push had to be >= 0, it did not find a minimal solution. I didn't see any minimization function, but I only played around with it for an hour or so. I should investigate SAT solvers more, they seem like interesting tools.
 * I looked for a common lisp SAT solver. They exist, but none appear to support arithmetic. This may be false as a second look at them makes me think that cl-sat just wraps a c based solver which may handle arithmetic.
 * The correct solution is I think to use [the Simplex algorithm](https://en.wikipedia.org/wiki/Simplex_algorithm). There does appear to be some form of simplex implemented for common lisp in [some guy's code competition library](https://github.com/privet-kitty/cl-competitive/blob/master/module/simplex-common.lisp). There's also [this simplex library for common lisp](https://github.com/postamar/cl-rational-simplex). This [solution uses simplex](https://github.com/RussellDash332/advent-of-code/blob/main/aoc-2025%2FDay-10%2FPython%2Fmain.py). I read the Wikipedia article on Simplex and it does appear to be best algorithm for solving these kinds of linear systems with constraints.
+
+## [Day 10](src/day-11.lisp)
+
+Part 1. As always pretty easy.
+
+Part 2. This is a pretty common AoC problem, counting paths with large amounts of branching. The keys are always:
+
+* Don't try to form the paths, always just do the counting.
+* The solution is always recursive and memoized. The key is to set up the recursive solution so that memoization actually happens.
