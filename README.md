@@ -68,3 +68,21 @@ Things I learned from this problem:
 * It helps to have a picture for these geometric problems. I learned enough gnuplot to draw the polygon represented by the points in the data file. This helped with visualization and understanding what the goal was.
 * Common Lisp really doesn't have any good geometry libraries. I did use [this library](https://github.com/Ramarren/cl-geometry) to try and solve the problem. While I did learn some new concepts and ideas from the library (unfortunately, none of them helped me solve the problem) I did come across a nasty bug that made me unable to continue using it to try and solve the problem.
 * I need to learn more about computational geometry. To be clear, I doubt there is an algorithm that solves this problem directly. However, learning more about geometrical computations would probably have made me more comfortable programming with geometrical ideas and given me more confidence in exploring the problem space. AOC should be about learning new things, not solving specific problems.
+
+## [Day 10](src/day-10.lisp)
+
+Part 1 was as always pretty straightforward. Use Dijkstra's algorithm to find the quickest combinartion of presses that arrives at the combo.
+
+Part 2 was a doozy. Some notes on the solution:
+
+* I immediately knew that Dijkstra's wasn't going to work.
+* I was able to pretty easily solve the sample problems using a recursive solution with memoization.
+* I did switch at this point from using fare-memoization to using function-cache for memoizing functions. I also went back and removed fare-memoization from day 07. The main issue that fare-memoization doesn't behave well on recompiles. Secondarily it also doesn't have as much in the way of controlling the caches used.
+* I did realize that this was a diophantine style equation, but I don't know how to solve those.
+* I eventually found [this reddit page](https://www.reddit.com/r/adventofcode/comments/1pk87hl/2025_day_10_part_2_bifurcate_your_way_to_victory/) which explained how that person solved part 2. I did eventually do a straightforward copy of the python into common lisp.
+* The copy is pretty 1 to 1. Nice to see that common lisp is significantly faster than python, 6.5s vs 10.5s.
+* I don't like the explanation on the reddit page. I have tried to comment my code to explain the "trick."
+* I do think this one is a trick. You have to assume the solution will be of a certain shape. I don't think in general you can assume this for this type of problem if the data were to be chosen differently.
+* Lots of people solved this using SAT solvers. I played around with the Z3 python SAT solver. I was able to get it to solve one of the sample problems manually. However, I had to tell it that one of the variables should definitely be zero to get the minimal correct solution. When I only put the restruction that every push had to be >= 0, it did not find a minimal solution. I didn't see any minimization function, but I only played around with it for an hour or so. I should investigate SAT solvers more, they seem like interesting tools.
+* I looked for a common lisp SAT solver. They exist, but none appear to support arithmetic. This may be false as a second look at them makes me think that cl-sat just wraps a c based solver which may handle arithmetic.
+* The correct solution is I think to use [the Simplex algorithm](https://en.wikipedia.org/wiki/Simplex_algorithm). There does appear to be some form of simplex implemented for common lisp in [some guy's code competition library](https://github.com/privet-kitty/cl-competitive/blob/master/module/simplex-common.lisp). There's also [this simplex library for common lisp](https://github.com/postamar/cl-rational-simplex). This [solution uses simplex](https://github.com/RussellDash332/advent-of-code/blob/main/aoc-2025%2FDay-10%2FPython%2Fmain.py). I read the Wikipedia article on Simplex and it does appear to be best algorithm for solving these kinds of linear systems with constraints.

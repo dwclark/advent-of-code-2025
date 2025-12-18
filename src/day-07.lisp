@@ -4,7 +4,7 @@
   (:use #:cl)
   (:import-from :utils #:read-day-file)
   (:import-from :alexandria #:curry #:hash-table-keys)
-  (:import-from :fare-memoization #:define-memo-function #:*memoized*)
+  (:import-from :function-cache #:defcached)
   (:export #:part-1 #:part-2))
 
 (in-package :day-07)
@@ -31,7 +31,7 @@
 
 (defparameter *strs* nil)
 
-(define-memo-function take-path (beam level)
+(defcached take-path (beam level)
   (let ((current (if (< level (length *strs*)) (aref *strs* level) nil)))
     (cond ((not current)
 	   1)
