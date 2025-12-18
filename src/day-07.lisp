@@ -4,7 +4,7 @@
   (:use #:cl)
   (:import-from :utils #:read-day-file)
   (:import-from :alexandria #:curry #:hash-table-keys)
-  (:import-from :fare-memoization #:define-memo-function)
+  (:import-from :fare-memoization #:define-memo-function #:*memoized*)
   (:export #:part-1 #:part-2))
 
 (in-package :day-07)
@@ -30,7 +30,6 @@
     splits))
 
 (defparameter *strs* nil)
-(defparameter *memoized* nil)
 
 (define-memo-function take-path (beam level)
   (let ((current (if (< level (length *strs*)) (aref *strs* level) nil)))

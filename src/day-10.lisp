@@ -3,8 +3,10 @@
 (defpackage :day-10
   (:use #:cl)
   (:import-from :utils #:read-day-file)
-  (:import-from :alexandria #:map-combinations #:ensure-gethash)
+  (:import-from :alexandria #:map-combinations #:ensure-gethash #:curry)
   (:import-from :cl-containers #:basic-queue #:enqueue #:dequeue #:empty-p)
+  (:import-from :fare-memoization #:define-memo-function #:*memoized* #:memoize)
+  (:import-from :function-cache #:defcached #:clear-cache #:cached-results-count)
   (:export #:part-1 #:part-2))
 
 (in-package :day-10)
@@ -23,7 +25,7 @@
 				    (setf start-pos (position #\( str :start end-pos))
 				    (read-from-string for-parse))))
 	(joltage (read-from-string (concatenate 'string "(" (subseq (substitute #\Space #\, str) (1+ (position #\{ str)) (position #\} str)) ")"))))
-    (make-line :goal lights :buttons buttons :joltage (make-array (length joltage) :initial-contents joltage))))
+    (make-line :goal lights :buttons buttons :joltage joltage)))
 
 (defun read-config (day)
   (loop for config-line in (read-day-file day)
@@ -53,10 +55,38 @@
 (defun part-1 ()
   (reduce #'+ (mapcar #'solve-1 (read-config "10"))))
 
-;; no longer loops, previous states can repeat
-;; however, stopping condition is now can't go over limit on any one number
-;; dijkstra's will probably work but may be too slow
+(defparameter *press-combinations* nil)
+
+(defun press-combinations (buttons joltages)
+  (let ((normalized (loop for button in buttons
+			  collecting (loop for i from 0 below (length joltages)
+					   collecting (if (member i button :test #'eql) 1 0)))))
+    (let ((ret nil))
+      (dotimes (n (length normalized))
+	(map-combinations #'(lambda (lists)
+			      (push (cons (apply #'mapcar #'+ lists) (1+ n)) ret))
+			  normalized
+			  :length (1+ n)))
+      (append (list (cons (make-sequence 'list (length joltages) :initial-element 0) 0)) (reverse ret)))))
+
+(defun solved-p (goal)
+  (every #'zerop goal))
+
+(defcached solve-2 (goal)
+  (if (solved-p goal) (return-from solve-2 0))
+  
+  (loop with best-answer = most-positive-fixnum
+	for (presses . cost) in *press-combinations*
+	do (if (every #'identity (mapcar #'(lambda (i j) (and (<= i j) (= (rem i 2) (rem j 2)))) presses goal))
+	       (let ((next-goal (mapcar #'(lambda (i j) (truncate (- j i) 2)) presses goal)))
+		 (setf best-answer (min best-answer (+ cost (* 2 (solve-2 next-goal)))))))
+	finally (return best-answer)))
 
 (defun part-2 ()
-  )
-	       
+  (let ((lines (read-config "10")))
+    (reduce #'+ (loop for line in lines
+		      collecting (let ((*press-combinations* (press-combinations (line-buttons line) (line-joltage line))))
+				   (clear-cache *solve-2-cache*)
+				   (let ((solution (solve-2 (line-joltage line))))
+				     (format t "solution: ~A, hash-table count: ~A~%" solution (cached-results-count *solve-2-cache*))
+				     solution))))))
