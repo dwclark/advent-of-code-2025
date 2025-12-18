@@ -18,6 +18,4 @@
                (:file "src/day-09")
                (:file "src/day-10")
                (:file "src/day-11")
-               ;;(:file "src/day-12")
-	       
-	       ))
+               (:file "src/day-12")))
