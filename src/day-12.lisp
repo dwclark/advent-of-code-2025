@@ -42,16 +42,24 @@
       (let ((start-regions (read-pieces)))
 	(values pieces (read-regions start-regions))))))
 
+;; total-units measures how many grid units there are in a region
+;; min-units-needed measures how many grid units are needed for each
+;; present assuming perfect packing with no empty space.
+;; if you can't pack them in the region, even with no empty space, it's impossible.
 (defun total-units (region)
   (* (first region) (second region)))
-
-(defun total-tiles (region)
-  (* (truncate (first region) 3) (truncate (second region) 3)))
 
 (defun min-units-needed (region pieces)
   (loop for piece in pieces
 	for count in (rest (rest region))
 	summing (* count (hash-table-count piece))))
+
+;; total-tiles is the number of 3x3 tiles in the region
+;; lazy-tiles-needed is the number of 3x3 tiles needed to just lazily
+;; place each present on a 3x3 region with no packing attempted
+;; if lazy-tiles-needed <= total-tiles, it's definitely possble
+(defun total-tiles (region)
+  (* (truncate (first region) 3) (truncate (second region) 3)))
 
 (defun lazy-tiles-needed (region)
   (loop for count in (rest (rest region))
@@ -61,6 +69,7 @@
   (multiple-value-bind (pieces regions) (parse-data "12")
     (loop for region in regions
 	  summing (if (<= (lazy-tiles-needed region) (total-tiles region)) 1 0) into total
+	  ;; assert that it's either definitely impossible OR definitely possble
 	  do (assert (or (< (total-units region) (min-units-needed region pieces))
 			 (<= (lazy-tiles-needed region) (total-tiles region))))
 	  finally (return total))))

@@ -95,3 +95,15 @@ Part 2. This is a pretty common AoC problem, counting paths with large amounts o
 
 * Don't try to form the paths, always just do the counting.
 * The solution is always recursive and memoized. The key is to set up the recursive solution so that memoization actually happens.
+
+## [Day 12](src/day-12.lisp)
+
+At first I panicked, another geometrical challenge :(
+
+I did peek at reddit to see if there was a part 2, the format has changed and I simply wanted to know if I was going to be able to finish today. Turns out, no part 2. I did see a cartoon which said the practice inputs are much harder than the actual inputs. That was the clue I needed.
+
+I started look for geometrical algorithms that solved these tetris type problems. I immediately saw that these types of things are NP complete and fall under the general category of bin problems. The stack overflow post was also kind enough to point me to [Skiena's book](https://www.amazon.com/Algorithm-Design-Manual-Computer-Science/dp/3030542556/) on bin problems. Sure enough Skiena confirmed that these problems are NP complete and that most solutions involving irregular shapes involve packing the items into regular boxes and solving the problem with the boxes.
+
+At this point I guessed that every line would fall into one of two categories: either definitely possible or definitely impossible. I did a quick program to check that one of those cases holders for every region. It turns out that one does hold for each region. At that point, it was mainly a matter of just counting the regions for which a solution is definitely possible.
+
+Definitely a day in which paying attention to what's possible and what the data looks like paid off big.
