@@ -1,5 +1,5 @@
 (defpackage :day-02
-  (:use #:cl #:fsio-csv #:fsio-utils)
+  (:use :cl)
   (:import-from :utils #:read-day-file)
   (:import-from :alexandria #:hash-table-keys)
   (:import-from :cl-ppcre #:split)
@@ -66,3 +66,4 @@
 		 finally (return (hash-table-keys accum)))))
     
     (reduce #'+ (mapcan #'invalids-for (read-contents "02")))))
+

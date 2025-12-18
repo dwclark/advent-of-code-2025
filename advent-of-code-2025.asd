@@ -3,8 +3,8 @@
   :author "David Clark <daveloper9000@gmail.com>"
   :license  "Apache 2"
   :version "0.0.1"
-  :depends-on ("alexandria" "cl-ppcre" "fare-memoization" "array-operations" "infix-math" "cl-heap"
-                            "cl-containers" "split-sequence" "fast-structured-io" "function-cache")
+  :depends-on ("alexandria" "cl-ppcre" "array-operations" "infix-math" "cl-heap"
+                            "cl-containers" "split-sequence" "function-cache")
   :serial t
   :components ((:file "src/utils")
                (:file "src/day-01")
@@ -17,7 +17,7 @@
                (:file "src/day-08")
                (:file "src/day-09")
                (:file "src/day-10")
-               #|(:file "src/day-11")
-               (:file "src/day-12")|#
+               (:file "src/day-11")
+               ;;(:file "src/day-12")
 	       
 	       ))

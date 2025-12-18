@@ -3,7 +3,7 @@
 (defpackage :day-10
   (:use #:cl)
   (:import-from :utils #:read-day-file)
-  (:import-from :alexandria #:map-combinations #:ensure-gethash #:curry)
+  (:import-from :alexandria #:map-combinations)
   (:import-from :cl-containers #:basic-queue #:enqueue #:dequeue #:empty-p)
   (:import-from :function-cache #:defcached #:clear-cache #:cached-results-count)
   (:export #:part-1 #:part-2))

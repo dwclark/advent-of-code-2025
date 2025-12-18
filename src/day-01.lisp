@@ -1,6 +1,6 @@
 (defpackage :day-01
   (:use :cl)
-  (:import-from :utils :read-day-file)
+  (:import-from :utils #:read-day-file)
   (:export #:part-1 #:part-2))
 
 (in-package :day-01)
