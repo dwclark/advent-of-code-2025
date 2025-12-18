@@ -87,7 +87,7 @@ Part 2 was a doozy. Some notes on the solution:
 * I looked for a common lisp SAT solver. They exist, but none appear to support arithmetic. This may be false as a second look at them makes me think that cl-sat just wraps a c based solver which may handle arithmetic.
 * The correct solution is I think to use [the Simplex algorithm](https://en.wikipedia.org/wiki/Simplex_algorithm). There does appear to be some form of simplex implemented for common lisp in [some guy's code competition library](https://github.com/privet-kitty/cl-competitive/blob/master/module/simplex-common.lisp). There's also [this simplex library for common lisp](https://github.com/postamar/cl-rational-simplex). This [solution uses simplex](https://github.com/RussellDash332/advent-of-code/blob/main/aoc-2025%2FDay-10%2FPython%2Fmain.py). I read the Wikipedia article on Simplex and it does appear to be best algorithm for solving these kinds of linear systems with constraints.
 
-## [Day 10](src/day-11.lisp)
+## [Day 11](src/day-11.lisp)
 
 Part 1. As always pretty easy.
 
