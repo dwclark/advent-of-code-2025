@@ -4,7 +4,7 @@
   :license  "Apache 2"
   :version "0.0.1"
   :depends-on ("alexandria" "cl-ppcre" "array-operations" "infix-math" "cl-heap"
-                            "cl-containers" "split-sequence" "function-cache")
+                            "cl-containers" "split-sequence" "function-cache" "linear-programming")
   :serial t
   :components ((:file "src/utils")
                (:file "src/day-01")

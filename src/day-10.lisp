@@ -6,6 +6,7 @@
   (:import-from :alexandria #:map-combinations)
   (:import-from :cl-containers #:basic-queue #:enqueue #:dequeue #:empty-p)
   (:import-from :function-cache #:defcached #:clear-cache #:cached-results-count)
+  (:import-from :linear-programming #:parse-linear-problem #:solve-problem #:solution-variable)
   (:export #:part-1 #:part-2))
 
 (in-package :day-10)
@@ -115,3 +116,42 @@
 				   (let ((solution (solve-2 (line-joltage line))))
 				     (format t "solution: ~A, hash-table count: ~A~%" solution (cached-results-count *solve-2-cache*))
 				     solution))))))
+
+(defun joltage-coefficients (buttons joltages)
+  (loop for i from 0 below (length joltages)
+	collecting (loop with coefficients = (make-array (length buttons) :initial-element 0)
+			 for button in buttons
+			 for button-index = 0 then (1+ button-index)
+			 do (loop for element in button
+				  do (if (= element i)
+					 (setf (aref coefficients button-index) 1)))
+			 finally (return coefficients))))
+
+(defun solve-lp (list-coefficients joltages)
+  (let* ((syms (loop for i from 0 below (length (first list-coefficients))
+		     collecting (intern (format nil "X~A" i))))
+	 (equation `(min (= w (+ ,@syms))))
+	 (gt-zero-constraints (loop for sym in syms collecting `(<= 0 ,sym)))
+	 (reduced-syms (loop for coefficients in list-coefficients
+			     collecting (loop with ret = nil
+					      for i from 0 below (length coefficients)
+					      do (if (= 1 (aref coefficients i))
+						     (push (nth i syms) ret))
+					      finally (return (reverse ret)))))
+	 (joltage-constraints (loop for joltage in joltages
+				    for reduced in reduced-syms
+				    collecting `(= ,joltage (+ ,@reduced))))
+	 (constraints (append gt-zero-constraints joltage-constraints))
+	 (problem (parse-linear-problem equation constraints))
+	 (solution (solve-problem problem)))
+    (format t "equation: ~A~%" equation)
+    (format t "constraints: ~A~%" constraints)
+    (format t "answer: ~A~%" (solution-variable solution 'w))
+    (format t "here~%")))
+    
+	   
+(defun part-2-lp ()
+  (let ((lines (read-config "10a")))
+    (loop for line in lines
+	  do (let ((list-coefficients (joltage-coefficients (line-buttons line) (line-joltage line))))
+	       (solve-lp list-coefficients (line-joltage line))))))
