@@ -87,6 +87,42 @@ Part 2 was a doozy. Some notes on the solution:
 * I looked for a common lisp SAT solver. They exist, but none appear to support arithmetic. This may be false as a second look at them makes me think that cl-sat just wraps a c based solver which may handle arithmetic.
 * The correct solution is I think to use [the Simplex algorithm](https://en.wikipedia.org/wiki/Simplex_algorithm). There does appear to be some form of simplex implemented for common lisp in [some guy's code competition library](https://github.com/privet-kitty/cl-competitive/blob/master/module/simplex-common.lisp). There's also [this simplex library for common lisp](https://github.com/postamar/cl-rational-simplex). This [solution uses simplex](https://github.com/RussellDash332/advent-of-code/blob/main/aoc-2025%2FDay-10%2FPython%2Fmain.py). I read the Wikipedia article on Simplex and it does appear to be best algorithm for solving these kinds of linear systems with constraints.
 
+**Adendum 2025-12-18**
+
+It turns out that there is (of course) a library that does simplex, you just have to know what you are looking for. In fact, it appears to be a very good library that is easy to use: [Common Lisp Linear Programming](https://neil-lindquist.github.io/linear-programming/). It helps to know that you should search from Linear Programming as the more generic term, not Simplex.
+
+In fact, I was able to solve one of the example problems without much research. For example, this:
+
+```
+[.##.] (3) (1,3) (2) (2,3) (0,2) (0,1) {3,5,4,7}
+```
+
+Can be solved with this:
+
+```lisp
+(defvar aoc-problem (parse-linear-problem '(min (= w (+ a b c d e f)))
+						   '((<= 0 a)
+						     (<= 0 b)
+						     (<= 0 c)
+						     (<= 0 d)
+						     (<= 0 e)
+						     (<= 0 f)
+						     (= 3 (+ e f))
+						     (= 5 (+ b f))
+						     (= 4 (+ c d e))
+						     (= 7 (+ a b d)))))
+
+(defvar aoc-solution (solve-problem aoc-problem))
+
+(with-solution-variables (w a b c d e f)
+   (format t "total: ~A" w)
+   (format t "a: ~A, b: ~A, c: ~A, d: ~A, e: ~A, f: ~A" a b c d e f))
+
+;; output ->
+;; total: 10
+;; a: 1, b: 5, c: 0, d: 1, e: 3, f: 0
+```
+
 ## [Day 11](src/day-11.lisp)
 
 Part 1. As always pretty easy.
